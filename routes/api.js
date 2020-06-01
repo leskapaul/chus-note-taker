@@ -1,6 +1,8 @@
 //const db = require("../db/db.json");
 const fs = require("fs");
 
+var numSeq = 1;
+
 module.exports = function (app) {
   app.get("/api/notes", function (req, res) {
     res.send(fs.readFileSync(__dirname + "/../db/db.json", "utf8"));
@@ -11,7 +13,7 @@ module.exports = function (app) {
 
     // figure out what the next note id is by looking at what's already in the database
     var newNote = {
-      id: savedNotes.length + 1,
+      id: numSeq++,
       title: req.body.title,
       text: req.body.text,
     }
