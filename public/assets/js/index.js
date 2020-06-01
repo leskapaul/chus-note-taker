@@ -105,6 +105,7 @@ const handleRenderSaveBtn = function () {
 const renderNoteList = (notes) => {
   $noteList.empty();
   console.log(notes);
+  notes = JSON.parse(notes)
   const noteListItems = [];
 
   // Returns jquery object for li with given text and delete button
@@ -126,14 +127,12 @@ const renderNoteList = (notes) => {
   if (notes.length === 0) {
     noteListItems.push(create$li("No saved Notes", false));
   }
-    for (note in notes){
-      const $li = create$li(note.title).data(note);
-      noteListItems.push($li);
-    };
-  // notes.forEach((note) => {
-  //   const $li = create$li(note.title).data(note);
-  //   noteListItems.push($li);
-  // });
+
+  for (note of notes){
+    const $li = create$li(note.title, true);
+    $li.data(note)
+    noteListItems.push($li);
+  };
 
   $noteList.append(noteListItems);
 };

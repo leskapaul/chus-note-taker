@@ -6,17 +6,21 @@ module.exports = function (app) {
     res.send(fs.readFileSync(__dirname + "/../db/db.json", "utf8"));
   });
   app.post("/api/notes", function (req, res) {
-    var numSeq = 1;
-    var noteID = numSeq++;
+    // load our database
+    let savedNotes = JSON.parse(fs.readFileSync(__dirname + "/../db/db.json", "utf8"));
+
+    // figure out what the next note id is by looking at what's already in the database
     var newNote = {
-      id: noteID,
+      id: savedNotes.length + 1,
       title: req.body.title,
       text: req.body.text,
     }
     
-    let savedNotes = JSON.parse(fs.readFileSync(__dirname + "/../db/db.json", "utf8"));
+    // add the new node and save it in our database
     savedNotes.push(newNote)
     fs.writeFileSync(__dirname + "/../db/db.json", JSON.stringify(savedNotes));
+
+    // return true, i guess to tell client that the post was successful
     res.json(true);
   
   })
